@@ -188,6 +188,11 @@ describe("NGINX conf compiler", function()
       local kong_nginx_conf = prefix_handler.compile_kong_conf(conf)
       assert.matches("lua_ssl_verify_depth 2;", kong_nginx_conf, nil, true)
     end)
+    it("includes default lua_ssl_verify_depth", function()
+      local conf = assert(conf_loader(helpers.test_conf_path))
+      local kong_nginx_conf = prefix_handler.compile_kong_conf(conf)
+      assert.matches("lua_ssl_verify_depth 1;", kong_nginx_conf, nil, true)
+    end)
     it("does not include lua_ssl_trusted_certificate by default", function()
       local conf = assert(conf_loader(helpers.test_conf_path, {
         lua_ssl_verify_depth = "2"
